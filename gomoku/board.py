@@ -1,14 +1,29 @@
 # encoding: utf-8
 class Gomoku(object):
     def __init__(self):
-        self.board = [[0 for i in range(9)] for j in range(9)]
-        for i in range(9):
-            for j in range(9):
-                self.board[i][j] = '-'
+        self.status=['-' for i in range(81)]
+        self.avaliable=[i for i in range(81)]
+
+    def change(self,x,y):
+    	return 9*x+y
+
+  
 
     def play(self,player1,player2):
     	self.player1=player1
     	self.player2=player2
+    	self.current_player=player1
+    	self.showboard()
+    	while True:
+            self.current_player.get_action()
+            self.set_chessman(self.current_player)
+            self.showboard()
+            if self.is_won():
+        	   	print self.status[self.change(self.last_action[0],self.last_action[1])]," win"
+        	   	break
+			if len(self.avaliable)==0:
+				print "It is tied"
+				break
 
     def showboard(self):
     	print(' '),
@@ -18,92 +33,62 @@ class Gomoku(object):
         for i in range(9):
             print i,
             for j in range(9):
-                print self.board[i][j],
+                print self.status[9*i+j],
             print
-
-    def set_chess(self,pos,color):
-        self.board[pos[0]][pos[1]] = color        
-
-    def get_chess(self,pos):
-        return self.board[pos[0]][pos[1]]
 
     def set_chessman(self,player):
         pos = player.get_pos()
         if player==self.player1:
-        	color='X'
+        	self.status[9*pos[0]+pos[1]]='X'
         else:
-        	color='O'
-        self.set_chess(pos,color)
-
-    def is_won(self,player):
-    	pos=player.get_pos()
-    	if player==self.player1:
-        	color='X'
+        	self.status[9*pos[0]+pos[1]]='O'
+        self.avaliable.remove(9*pos[0]+pos[1])
+        self.last_action=pos
+        if player==self.player1:
+        	self.current_player=self.player2
         else:
-        	color='O'
-        start_x = 0
-        end_x = 8
-        if pos[0] -4 >=0:
-            start_x =pos[0] - 4
-        if pos[0] +4 <=8:
-            end_x = pos[0]+4
-        count = 0
-        for pos_x in range(start_x, end_x+1):
-            if self.get_chess((pos_x, pos[1])) == color:
-                count +=1
-                if count >=5:
-                    return True
-            else:
-                count = 0
-       
-        start_y = 0
-        end_y = 8
-        if pos[1] -4 >=0:
-            start_y =pos[1] - 4
-        if pos[1] +4 <=8:
-            end_y = pos[1]+4
+        	self.current_player=self.player1
 
-        count = 0
-        
-        for pos_y in range(start_y, end_y+1):
-            if self.get_chess((pos[0], pos_y)) == color:
-                count +=1
-                if count >=5:
-                    return True
-            else:
-                count = 0
+    def is_won(self):
+    	n=self.change(self.last_action[0],self.last_action[1])
+    	player=self.status[n]
+    	pos=self.last_action
+        c=0
+        for i in range(pos[0]*9,pos[0]*9+8):
+        	if self.status[i]==player:
+        	    c+=1
+        	else:
+        		c=0
+        	if c>=5:
+        		return True
+        c=0
+        for i in range(pos[1],pos[1]+72,9):
+        	if self.status[i]==player:
+				c+=1
+        	else:
+        		c=0
+        	if c>=5:
+        		return True
+        c=0
+        for i in range(n%10,80,10):
+        	if self.status[i]==player:
+				c+=1
+        	else:
+        		c=0
+        	if c>=5:
+        		return True
+        	if i%9==8:
+        		c=0
 
-        count = 0
-        s=pos[0] - pos[1]
-        start=start_x
-        end=end_y+s
-        if pos[0]>pos[1]:
-            start=start_y+s
-            end=end_x
-        for index in range(start, end+1):
-            if self.get_chess((index, index-s)) == color:
-                count +=1
-                if count >=5:
-                    return True
-            else:
-                count = 0
-
-        count = 0
-        s=pos[0] + pos[1]
-        if pos[0]+pos[1]<=5:
-            start=start_x
-            end=s-start_y
-
-        if pos[0]+pos[1]>3:
-            start=s-start_y
-            end=start_x
-
-        if s>=0 and s<=9:
-            for index in range(start, end+1):
-                if self.get_chess((index, s-index)) == color:
-                    count +=1
-                    if count >=5:
-                        return True
-                else:
-                    count = 0
+        c=0
+        for i in range(n%8,80,8):
+        	if self.status[i]==player:
+				c+=1
+        	else:
+        		c=0
+        	if c>=5:
+        		return True
+        	if i%9==0:
+        		c=0
         return False
+
