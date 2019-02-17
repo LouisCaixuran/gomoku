@@ -1,3 +1,8 @@
+import datetime
+from mcts import *
+import random
+
+
 class Player(object):
     def __init__(self):
         pass
@@ -9,13 +14,10 @@ class HumanPlayer(Player):
     def __init__(self,board):
     	self.board=board
 
-    def get_pos(self):
-        return self.pos
-
     
     def get_action(self):
     	while True:
-    		n=raw_input("please enter position:")
+    		n=raw_input("please enter actionition:")
         	ret = n.split(',')
         	if len(ret)==2:
         		x=int(ret[0])
@@ -24,8 +26,40 @@ class HumanPlayer(Player):
         			if self.board.status[x*9+y]=='-':
         				break
         	print("invalid input")
-        self.pos =x*9+y
+        action =x*9+y
+        return action
 
+
+class MCTSPlayer(Player):
+    """AI player based on MCTS"""
+    def __init__(self,board,c_puct=5,simulate_time=1):
+        self.mcts = MCTS(policy_value_fn, c_puct, simulate_time)
+        self.board=board
+
+    def reset_player(self):
+        self.mcts.update_with_move(-1)
+
+
+    
+    def get_action(self):
+        sensible_moves = self.board.available
+        if len(sensible_moves) > 0:
+            action = self.mcts.get_move(self.board)
+            self.mcts.update_with_move(-1)
+            return action
+
+        else:
+            print("WARNING: the board is full")
+
+    def __str__(self):
+        return "MCTS "
+
+class RandomPlayer(Player):
+	def __init__(self,board):
+		self.board=board
+
+	def get_action(self):
+			return random.choice(self.board.available)
 
 
 

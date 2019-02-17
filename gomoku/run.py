@@ -1,10 +1,11 @@
 from board import Gomoku
-from player import HumanPlayer
+from player import *
+
 
 def run():
     chess=Gomoku()
-    player1=HumanPlayer(chess)
-    player2=HumanPlayer(chess)
+    player1=RandomPlayer(chess)
+    player2=MCTSPlayer(chess)
     chess.play(player1,player2)
 
     
