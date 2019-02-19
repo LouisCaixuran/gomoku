@@ -23,6 +23,7 @@ class Gomoku(object):
         else:
             print("it is tied")
 
+
     def game_end(self):
         if self.is_won()==True :
             if self.current_player==self.player1:

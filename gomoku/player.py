@@ -1,6 +1,7 @@
 import datetime
 from mcts import *
 import random
+from expert import evaluate
 
 
 class Player(object):
@@ -32,7 +33,7 @@ class HumanPlayer(Player):
 
 class MCTSPlayer(Player):
     """AI player based on MCTS"""
-    def __init__(self,board,c_puct=5,simulate_time=1):
+    def __init__(self,board,c_puct=5,simulate_time=5):
         self.mcts = MCTS(policy_value_fn, c_puct, simulate_time)
         self.board=board
 
@@ -63,6 +64,15 @@ class RandomPlayer(Player):
 
 
 
+
+class ESTPlayer(Player):
+    def __init__(self,board):
+        self.board=board
+
+    def get_action(self):
+        x,y=evluate(self.board.status)
+        action=x*9+y
+        return action
 
 
 

@@ -4,8 +4,8 @@ from player import *
 
 def run():
     chess=Gomoku()
-    player1=RandomPlayer(chess)
-    player2=MCTSPlayer(chess)
+    player2=ESTPlayer(chess)
+    player1=MCTSPlayer(chess)
     chess.play(player1,player2)
 
     
