@@ -7,7 +7,7 @@ readme.md
 
 # Support three kinds of players:
 
-1.Human player
-2.MCTS player
-3.Random player
-4.Expert player
+* Human player
+* MCTS player
+* Random player
+* Expert player
