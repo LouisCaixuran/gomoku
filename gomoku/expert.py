@@ -2,7 +2,7 @@
 level = 9
 grade = 10
 MAX = 1008611
-def Scan(chesspad, color):
+def scan(chesspad, color):
 
 	shape = [[[0 for high in range(5)] for col in range(9)] for row in range(9)]
  # 扫描每一个点，然后在空白的点每一个方向上做出价值评估！！
@@ -98,7 +98,7 @@ def Scan(chesspad, color):
 	return shape
  
  
-def Sort(shape):
+def sort(shape):
 	for i in shape:
 		for j in i:
 			for x in range(5):
@@ -110,7 +110,7 @@ def Sort(shape):
 	return shape
  
  
-def Evaluate(shape):
+def evaluate(shape):
 	for i in range(level):
 		for j in range(level):
  
@@ -130,7 +130,7 @@ def Evaluate(shape):
 	return max_x, max_y,max
  
  
-def evaluate(board):
+def get_max_value_pos(board):
 	chesspad=[[0 for j in range(9)]for i in range(9)]
 	for i in range(9):
 		for j in range(9):
@@ -139,12 +139,12 @@ def evaluate(board):
 			elif board[i*9+j]=='O':
 				chesspad[i][j]=-1
 
-	shape_P = Scan(chesspad, 1)
-	shape_C=Scan(chesspad,-1)
-	shape_P = Sort(shape_P)
-	shape_C = Sort(shape_C)
-	max_x_P, max_y_P, max_P = Evaluate(shape_P)
-	max_x_C, max_y_C, max_C = Evaluate(shape_C)
+	shape_P = scan(chesspad, 1)
+	shape_C=scan(chesspad,-1)
+	shape_P = sort(shape_P)
+	shape_C = sort(shape_C)
+	max_x_P, max_y_P, max_P = evaluate(shape_P)
+	max_x_C, max_y_C, max_C = evaluate(shape_C)
 	if max_P>max_C and max_C<MAX:
 		return max_x_P,max_y_P
 	else:

@@ -1,7 +1,7 @@
 import datetime
 from mcts import *
 import random
-from expert import evaluate
+from expert import get_max_value_pos
 
 
 class Player(object):
@@ -70,7 +70,7 @@ class ESTPlayer(Player):
         self.board=board
 
     def get_action(self):
-        x,y=evluate(self.board.status)
+        x,y=get_max_value_pos(self.board.status)
         action=x*9+y
         return action
 
