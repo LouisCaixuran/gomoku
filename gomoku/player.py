@@ -1,7 +1,7 @@
 import datetime
 from mcts import *
 import random
-from expert import get_max_value_pos
+from expert import Expert
 
 
 class Player(object):
@@ -65,14 +65,22 @@ class RandomPlayer(Player):
 
 
 
-class ESTPlayer(Player):
+class ExpertPlayer(Player):
+    """AI player based on Expert"""
     def __init__(self,board):
+        self.expert = Expert()
         self.board=board
 
     def get_action(self):
-        x,y=get_max_value_pos(self.board.status)
-        action=x*9+y
-        return action
+        sensible_moves = self.board.available
+        if len(sensible_moves) > 0:
+            move = self.expert.get_move(self.board)
+            return move
+        else:
+            print("WARNING: the board is full")
+
+    def __str__(self):
+        return "Expert"
 
 
 

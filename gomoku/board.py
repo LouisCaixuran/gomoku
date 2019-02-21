@@ -1,9 +1,14 @@
 # encoding: utf-8
 class Gomoku(object):
     def __init__(self):
-        self.status=['-' for i in range(81)]
-        self.available=[i for i in range(81)]
+        self.width=9
+        self.height=9
+        self.status=['-' for i in range(self.height*self.width)]
+        self.available=[i for i in range(self.height*self.width)]
         self.last_action=-1
+        self.players=['X','O']
+        self.width=9
+        self.height=9
 
 
     def play(self,player1,player2):
@@ -37,15 +42,17 @@ class Gomoku(object):
 
 
     def showboard(self):
-        print(' '),
-        for i in range(9): 
-            print i,
+        print('   '),
+        for i in range(self.width):
+            print("  {pi}".format(pi=i)),
         print
-        for i in range(9):
-            print i,
-            for j in range(9):
-                print self.status[9*i+j],
+        for i in range(self.width):
             print
+            print("  {pi}".format(pi=i)),
+            for j in range(self.height):
+                print("  {pi}".format(pi=self.status[self.width*i+j])),
+            print
+        print("last action is",self.last_action%self.width,self.last_action//self.height)
 
     def set_chessman(self,action):
     	player=self.current_player
@@ -66,7 +73,7 @@ class Gomoku(object):
         player=self.status[self.last_action]
         pos=self.last_action
         c=0
-        for i in range(pos-pos%9,pos-pos%9+8):
+        for i in range(pos-pos%9,pos-pos%9+9):
             if self.status[i]==player:
                 c+=1
             else:
@@ -74,7 +81,7 @@ class Gomoku(object):
             if c>=5:
                 return True
         c=0
-        for i in range(pos%9,pos%9+72,9):
+        for i in range(pos%9,pos%9+73,9):
             if self.status[i]==player:
                 c+=1
             else:
