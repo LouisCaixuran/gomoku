@@ -5,7 +5,7 @@ readme.md
 	$python run.py
 
 
-# Support three kinds of players:
+# Support four kinds of players:
 
 * Human player
 * MCTS player
