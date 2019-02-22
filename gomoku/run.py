@@ -1,6 +1,7 @@
 from board import Gomoku
 from player import *
 import logging
+import argparse
 
 def log_config():
     LOG_FORMAT = "%(asctime)s - %(levelname)s - %(message)s"
@@ -11,24 +12,30 @@ def log_config():
                         datefmt=DATE_FORMAT)
 
 def run():
-    print "player:1.HumanPlayer; 2.MCTSPlayer; 3.RandomPlayer; 4.ExpertPlayer"
+    parse=argparse.ArgumentParser(description="gomoku program")
+    parse.add_argument("player1", type=int, choices=[1,2,3,4],
+                    help="1.HumanPlayer; 2.MCTSPlayer; 3.RandomPlayer; 4.ExpertPlayer")
+
+    parse.add_argument("player2", type=int, choices=[1,2,3,4],
+                    help="1.HumanPlayer; 2.MCTSPlayer; 3.RandomPlayer; 4.ExpertPlayer")
+
+    args = parse.parse_args()
     chess=Gomoku()
-    player1=input("please choose player1:")
-    if player1==1:
+
+    if args.player1==1:
         player1=HumanPlayer(chess)
-    elif player1==2:
+    elif args.player1==2:
         player1=MCTSPlayer(chess)
-    elif player1==3:
+    elif args.player1==3:
         player1=RandomPlayer(chess)
     else:
         player1=ExpertPlayer(chess)
 
-    player2=input("please choose player2:")
-    if player2==1:
+    if args.player2==1:
         player2=HumanPlayer(chess)
-    elif player2==2:
+    elif args.player2==2:
         player2=MCTSPlayer(chess)
-    elif player2==3:
+    elif args.player2==3:
         player2=RandomPlayer(chess)
     else:
         player2=ExpertPlayer(chess)
