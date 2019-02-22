@@ -21,26 +21,19 @@ def run():
 
     args = parse.parse_args()
     chess=Gomoku()
+    p1={
+        1 : HumanPlayer(chess),
+        2 : MCTSPlayer(chess),
+        3 : RandomPlayer(chess),
+        4 : ExpertPlayer(chess)}
 
-    if args.player1==1:
-        player1=HumanPlayer(chess)
-    elif args.player1==2:
-        player1=MCTSPlayer(chess)
-    elif args.player1==3:
-        player1=RandomPlayer(chess)
-    else:
-        player1=ExpertPlayer(chess)
+    p2={
+        1 : HumanPlayer(chess),
+        2 : MCTSPlayer(chess),
+        3 : RandomPlayer(chess),
+        4 : ExpertPlayer(chess)}
 
-    if args.player2==1:
-        player2=HumanPlayer(chess)
-    elif args.player2==2:
-        player2=MCTSPlayer(chess)
-    elif args.player2==3:
-        player2=RandomPlayer(chess)
-    else:
-        player2=ExpertPlayer(chess)
-    
-    chess.play(player1,player2)
+    chess.play(p1[args.player1],p2[args.player2])
 
     
 
