@@ -24,4 +24,10 @@ If you want to play with ExpertPlayer,you can run
 * 1.Human player
 * 2.MCTS player
 * 3.Random player
-* 4.Expert player
+* 4.Expert 
+
+# myproject 
+
+The project is a web UI for the gomoku game
+
+	
