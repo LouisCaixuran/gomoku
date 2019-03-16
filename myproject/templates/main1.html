@@ -1,0 +1,293 @@
+<!DOCTYPE html> 
+<html> 
+<head lang="en"> 
+ <meta charset="UTF-8"> 
+ <title></title> 
+ <style> 
+  #chess { 
+   display: inline-block; 
+  } 
+  #chat { 
+   display: inline-block; 
+   position: absolute; 
+   margin-top: 10px; 
+   margin-left: 50px; 
+   color: #000;
+  } 
+  canvas { 
+   margin: 20px 0 0 20px; 
+   width: 544px; 
+   padding: 20px;
+   display: block; 
+   background: url(/static/images/wood.jpg)  14px 14px rgb(250, 250, 250); 
+   box-shadow: 8px 8px 32px #999; 
+   -webkit-box-shadow: 8px 8px 32px #999; 
+   -moz-box-shadow: 8px 8px 32px #999; 
+  } 
+  #box { 
+   display: block; 
+   margin: 0px 0px 0px 0px; 
+   color: #000;
+  }
+  span { 
+   font: 24px "微软雅黑"; 
+   display: inline-block; 
+   height: 50px; 
+  } 
+  #mylist { 
+   margin-top: 10px; 
+   display: inline-block; 
+   width: 200px; 
+   height: 50px; 
+   font: 16px "微软雅黑"; 
+   color: #000; 
+   background-color: #ffffff; 
+  } 
+  #btn { 
+   margin-top: 0px; 
+   display: block; 
+   width: 160px; 
+   height: 60px; 
+   font: 16px "微软雅黑"; 
+   color: #000; 
+   background-color: #ffffff; 
+  }
+  #content{
+   margin: 20px 0 0 0px; 
+   display: block; 
+   color: #000; 
+   background-color: #ffffff; 
+  }
+  #isfist
+  {
+   margin: 100px 100px 100px 100px; 
+   display: block; 
+   color: #000; 
+   background-color: #ffffff; 
+  }
+  #websocket{
+   font: 20px "微软雅黑"; 
+  }
+  button{
+   margin-top: 10px; 
+   display: inline; 
+   height: 50px; 
+   width: 80px;
+   font: 16px "微软雅黑"; 
+   color: #000; 
+   background-color: #aaaa33; 
+  }
+ </style> 
+</head> 
+
+<body> 
+
+<div id="chess">
+  <div id="chessboard">
+    <canvas width="544" height="544" id="cas"> 
+     您的浏览器不支持canvas，请升级到最新的浏览器 
+    </canvas>
+  </div>
+</div>
+
+<div id="chat"> 
+
+    <div id="message">
+     <textarea id="content" rows="15" cols="80" readonly="true">欢迎来下棋</textarea>
+    </div>
+
+    <div id="box"> 
+     <span id="txt"></span> 
+      <form>
+      请选择对手：
+      <select id="mylist">
+      <option value="专家" selected="selected"> 专家</option>
+      <option value="中级"> 中级</option>
+      <option value="初级"> 初级</option>
+      </select>
+      </form>
+
+      <span id="txt"></span> 
+      请选择先手：
+      <form>
+      <input type="radio" name= "isfirst" id= "whoisfirst" onclick="check(this.value)" value="Machine" checked="checked"> Machine<br />
+      <input type="radio" name= "isfirst" id= "whoisfirst" onclick="check(this.value)" value="Me"> Me<br />
+      </form>
+
+     <span id="txt"></span> 
+     <input type="button" id="btn" value="开始"/> 
+    </div> 
+</div>
+
+<script>
+var ws_chess = null;
+var isWin = true; //判断是否结束，true结束，false没有结束 
+var step = 36; //设置每个格子的宽高都是40 
+var isturn = true;
+ 
+//用二维数组来保存棋盘，0代表没有走过，1为白棋走过，2为黑棋走过 
+var arr = new Array(15); //声明一个一维数组 
+for (var i = 0; i < 15; i++) { 
+    arr[i] = new Array(15); //每个值再声明一个一维数组，这样就组成了一个二维数组 
+    for (var j = 0; j < 15; j++) { 
+        arr[i][j] = 0; 
+    } 
+} 
+var txt = document.getElementById("txt"); 
+var btn = document.getElementById("btn"); 
+var cas = document.getElementById("cas");// 获取画布对象 
+var ctx = cas.getContext("2d"); //画布上下文 
+var mylist=document.getElementById("mylist") 
+var whoisfirst = document.getElementById("whoisfirst").value
+  
+// 创建图片对象 
+var img_b = new Image(); 
+img_b.src = "/static/images/black.png";//设置黑棋图片路径 
+var img_w = new Image(); 
+img_w.src = "/static/images/white.png";//设置白棋图片路径 
+var reply_msg
+//init the chessboard
+drawLine(); 
+function check(isfirst)
+{
+  whoisfirst = isfirst;
+};
+//建立websocket的连接，并
+function open_ws_chess() {
+    
+    ws_chess= new WebSocket('ws://' + window.location.host +'/playchess/');
+    
+    var playinfo = '\n'+'对手等级:'+ mylist.options[mylist.selectedIndex].text+'  ';
+    playinfo = playinfo + '先手:'+ whoisfirst+'\n';
+    
+    ws_chess.onmessage = function chessmessage(data) { //接受消息处理
+        var msg = JSON.parse(data.data);
+        var msgtype = msg.msgtype;
+        reply_msg = msg 
+        if (msgtype == "chess"){
+            if(msg.end == true){ //对局已经结束
+                drawChess(msg.Color,msg.Px,msg.Py);  
+                if(msg.winner == 2){
+                    alert("白棋获胜，请刷新重新开始！"); 
+                }
+                else if(msg.winner == 1){
+                    alert("黑棋获胜，请刷新重新开始！"); 
+                }
+                else{
+                    alert("双方和棋，请刷新重新开始！"); 
+                }
+                isWin = true
+                return 0; 
+            }
+            isturn = true  
+            drawChess(msg.Color,msg.Px,msg.Py);
+        }
+    };
+    ws_chess.onopen = function(event){
+        content.innerHTML += 'chess: 连接成功。\n'+playinfo;
+        content.scrollTop = content.scrollHeight;
+        var send_obj = { msgtype:'playinfo', 
+                         player:mylist.options[mylist.selectedIndex].text,
+                         whoisfirst:whoisfirst};
+        ws_chess.send(JSON.stringify(send_obj));
+    };
+    ws_chess.onerror = function(){
+      content.innerHTML += 'chess: 连接错误。\n'+playinfo;
+      content.scrollTop = content.scrollHeight;
+    };
+    ws_chess.onclose = function(){
+        content.innerHTML += 'chess: 连接关闭。\n';
+        content.scrollTop = content.scrollHeight;
+        ws_chess = null;
+    };
+}
+//绘制棋盘 
+function drawLine() { 
+    ctx.strokeStyle="black"; 
+    width = cas.width-40;
+    height = cas.height-40;
+    for (var i = 0; i <= width / step; i++) { 
+    // 画竖线 
+    ctx.moveTo((i + 0) * step + 20, 20); 
+    ctx.lineTo((i + 0) * step + 20, height+20); 
+    // 画横线 
+    ctx.moveTo(20, (i + 0) * step+20); 
+    ctx.lineTo(width+20, (i + 0) * step+20); 
+    ctx.stroke(); 
+    } 
+} 
+//获取鼠标点击的位置并下棋 
+cas.onclick = function (e) { 
+  
+    if (isWin) { // 先判断游戏是否结束 
+        alert("游戏已经结束，请刷新重新开始！"); 
+        return 0; 
+    } 
+    if (isturn == false){ //判断是否轮流到webplayer下棋
+        return 0; 
+    }
+    //判断棋子显示的地方，四条边上不显示棋子， 
+    //鼠标点击的位置减去边框距离页面的上和左的距离（10），减去一个格子宽高的一半（18） 
+    var x = (e.clientX - 20 - 0 - 22)/ 36; 
+    var y = (e.clientY - 20 - 0 - 22)/ 36; 
+    
+    //进行取整来确定棋子最终显示的区域 
+    x = parseInt(x); 
+    y = parseInt(y); 
+    //如果超出棋盘或者在棋盘边界直接返回，边界上不能画棋子 
+    if(x < 0 || x >= 15 || y < 0 || y >= 15) { 
+        return 0; 
+    } 
+    //进行判断该位置是否已经显示过棋子 
+    if (arr[x][y] != 0) { 
+        alert("你不能在这个位置下棋"); 
+        return 0; 
+    } 
+    if (whoisfirst == 'Me'){
+      color = 1
+    }
+    else{
+       color =2
+    }
+    drawChess(color, x, y); //调用函数来画棋子
+    isturn = false;
+ 
+    var send_obj = {msgtype:'chess', Color:color, Px:x, Py:y};
+    ws_chess.send(JSON.stringify(send_obj));
+} 
+//画棋子 
+function drawChess(num, x, y) { 
+    //根据x和y确定图片显示位置,让图片显示在十字线中间，因为一个格子为40，图片大小为30，所以40-30/2等于25，所以需要加上25 
+    var x0 = x * step + 5 - 0; 
+    var y0 = y * step + 5 - 0; 
+    if (num == 2) { 
+        //绘制白棋 
+        ctx.drawImage(img_w, x0, y0); 
+        arr[x][y] = 2; //白子 
+    } 
+    else if (num == 1) { 
+        // 绘制黑棋 
+        ctx.drawImage(img_b, x0, y0); 
+        arr[x][y] = 1; //黑子 
+    } 
+} 
+ 
+//重新开始 
+btn.onclick = function() { 
+    isWin = false; 
+    isturn = true;
+    for (var i = 0; i < 15; i++) { 
+        for (var j = 0; j < 15; j++) { 
+            arr[i][j] = 0; 
+        } 
+    } 
+    ctx.clearRect(0, 0, 640, 640); 
+    txt.innerHTML = ""; 
+    drawLine(); 
+    open_ws_chess();
+    btn.value = "重新开始";
+} 
+ 
+</script> 
+</body> 
+</html> 
