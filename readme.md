@@ -1,7 +1,7 @@
 readme.md
 
 # How to run
-	
+
 	$apt-get install python-pip,python-dev
 	$pip install numpy
 
