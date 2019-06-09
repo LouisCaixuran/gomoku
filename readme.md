@@ -1,9 +1,10 @@
 readme.md
 
 # How to run
-        $apt-get install python-pip,python-dev
-	$pip install numpy
 	
+	$apt-get install python-pip,python-dev
+	$pip install numpy
+
         $ python run.py -h
 	usage: run.py [-h] {1,2,3,4} {1,2,3,4}
 
