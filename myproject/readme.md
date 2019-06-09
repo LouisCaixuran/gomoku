@@ -6,7 +6,7 @@ This is a gomoku web game based on django framework.
 
 	$pip3 install django
 	$pip3 install numpy
-	$pip3 install channals
+	$pip3 install channels
 
 ## How to run the program
 
