@@ -1,8 +1,10 @@
 readme.md
 
 # How to run
-
-	$ python run.py -h
+        $apt-get install python-pip,python-dev
+	$pip install numpy
+	
+        $ python run.py -h
 	usage: run.py [-h] {1,2,3,4} {1,2,3,4}
 
 	gomoku program
