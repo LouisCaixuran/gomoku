@@ -3,7 +3,7 @@ readme.md
 This is a gomoku web game based on django framework.
 
 ## How to build the environmet
-
+	$apt install python-dev
 	$pip3 install django
 	$pip3 install numpy
 	$pip3 install channels
