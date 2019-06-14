@@ -191,12 +191,12 @@ class Expert(object):
         m_move,m_value = self.evaluate_all_value(m_player_id)
         
         logging.info("loaction:{loc},value:{value}".format(
-        	         loc = self.move_to_location(m_move),value=m_value))
+                     loc = self.move_to_location(m_move),value=m_value))
         
         s_move,s_value = self.evaluate_all_value(s_player_id)
         
         logging.info("O_loaction:{loc},value:{value}".format(
-        	          loc = self.move_to_location(s_move),value = s_value))
+                      loc = self.move_to_location(s_move),value = s_value))
 
         if m_value >= s_value :
             return m_move

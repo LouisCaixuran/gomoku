@@ -13,20 +13,20 @@ class Player(object):
     
 class HumanPlayer(Player):
     def __init__(self,board):
-    	self.board=board
+        self.board=board
 
     
     def get_action(self):
-    	while True:
-    		n=raw_input("please enter actionition:")
-        	ret = n.split(',')
-        	if len(ret)==2:
-        		x=int(ret[0])
-        		y=int(ret[1])
-        		if x>=0 and x<9 and y>=0 and y<9:
-        			if self.board.status[x*9+y]=='-':
-        				break
-        	print("invalid input")
+        while True:
+            n=raw_input("please enter actionition:")
+            ret = n.split(',')
+            if len(ret)==2:
+                x=int(ret[0])
+                y=int(ret[1])
+                if x>=0 and x<9 and y>=0 and y<9:
+                    if self.board.status[x*9+y]=='-':
+                        break
+            print("invalid input")
         action =x*9+y
         return action
 
@@ -56,11 +56,11 @@ class MCTSPlayer(Player):
         return "MCTS "
 
 class RandomPlayer(Player):
-	def __init__(self,board):
-		self.board=board
+    def __init__(self,board):
+        self.board=board
 
-	def get_action(self):
-			return random.choice(self.board.available)
+    def get_action(self):
+            return random.choice(self.board.available)
 
 
 
