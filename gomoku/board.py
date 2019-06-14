@@ -55,8 +55,8 @@ class Gomoku(object):
         print("last action is",self.last_action//self.height,self.last_action%self.width)
 
     def set_chessman(self,action):
-    	player=self.current_player
-    	self.last_action=action
+        player=self.current_player
+        self.last_action=action
         if player==self.player1:
             self.status[action]='X'
         else:
@@ -68,8 +68,8 @@ class Gomoku(object):
             self.current_player=self.player1
 
     def is_won(self):
-    	if self.last_action==-1:
-    		return False
+        if self.last_action==-1:
+            return False
         player=self.status[self.last_action]
         pos=self.last_action
         c=0
