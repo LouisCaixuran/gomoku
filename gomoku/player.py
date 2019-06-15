@@ -18,7 +18,7 @@ class HumanPlayer(Player):
     
     def get_action(self):
         while True:
-            n=raw_input("please enter actionition:")
+            n=input("please enter actionition:")
             ret = n.split(',')
             if len(ret)==2:
                 x=int(ret[0])

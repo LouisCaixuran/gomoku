@@ -21,6 +21,7 @@ If the server IP is 192.168.1.10
 update the setting.py file : ALLOWED_HOSTS=[192.168.1.10]
 	
 	$python3 manage.py runserver 192.168.1.10:8000
+change the dir address into the real /gomoku/myproject/templates file address in the server
 
 Open http://192.168.1.10:8000/main/ in browser
 
