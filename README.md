@@ -4,8 +4,8 @@
 ## Install 
         
 	$ git clone https://github.com/LouisCaixuran/gomoku.git
-	$ sudo pip3 install -r requirements.txt
 	$ cd gomoku
+	$ sudo pip3 install -r requirements.txt
 	$ sudo python3 setup.py install
 
 ## Use
