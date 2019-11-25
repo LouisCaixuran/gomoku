@@ -31,7 +31,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'channels',
-    'gomoku',
+    'gomoku_app',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -50,12 +50,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'myproject.urls'
+ROOT_URLCONF = 'gomoku_ui.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join('/Users/caihui/myproject/templates')],
+        'DIRS': [os.path.join('/Users/caihui/gomoku-ui/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -68,7 +68,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'myproject.wsgi.application'
+WSGI_APPLICATION = 'gomoku_ui.wsgi.application'
 
 
 # Database
@@ -129,4 +129,4 @@ STATICFILES_DIRS = (
 )
 
 # Channels
-ASGI_APPLICATION = 'myproject.routing.application'
+ASGI_APPLICATION = 'gomoku_ui.routing.application'

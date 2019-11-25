@@ -1,8 +1,8 @@
 from channels.generic.websocket import WebsocketConsumer
 import json
 from queue import Queue
-from .board import Gomoku
-from .player import ExpertPlayer,RandomPlayer,MCTSPlayer
+from gomoku.board import Gomoku
+from gomoku.player import ExpertPlayer,RandomPlayer,MCTSPlayer
 import threading
 import logging
 
