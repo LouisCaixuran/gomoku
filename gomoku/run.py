@@ -1,5 +1,5 @@
-from board import Gomoku
-from player import *
+from .board import Gomoku
+from .player import *
 import logging
 import argparse
 
@@ -14,10 +14,10 @@ def log_config():
 def run():
     parse=argparse.ArgumentParser(description="gomoku program")
     parse.add_argument("player1", type=int, choices=[1,2,3,4],
-                    help="1.HumanPlayer; 2.MCTSPlayer; 3.RandomPlayer; 4.ExpertPlayer")
+                    help="1.Human; 2.MCTS; 3.Random; 4.Expert")
 
     parse.add_argument("player2", type=int, choices=[1,2,3,4],
-                    help="1.HumanPlayer; 2.MCTSPlayer; 3.RandomPlayer; 4.ExpertPlayer")
+                    help="1.Human; 2.MCTS; 3.Random; 4.Expert")
 
     args = parse.parse_args()
     chess=Gomoku()
@@ -33,7 +33,7 @@ def run():
         3 : RandomPlayer(chess),
         4 : ExpertPlayer(chess)}
 
-    chess.play(p1[args.player1],p2[args.player2])
+    chess.play(p1[args.player1],p2[args.player2], isShow=True)
 
     
 

@@ -1,7 +1,7 @@
 import datetime
-from mcts import *
+from .mcts import *
 import random
-from expert import Expert
+from .expert import Expert
 
 
 class Player(object):
@@ -11,6 +11,9 @@ class Player(object):
     def get_action(self):
         pass
     
+    def reply(self,x,y):
+        pass
+
 class HumanPlayer(Player):
     def __init__(self,board):
         self.board=board
@@ -18,16 +21,16 @@ class HumanPlayer(Player):
     
     def get_action(self):
         while True:
-            n=input("please enter actionition:")
+            n=input("please enter action:")
             ret = n.split(',')
             if len(ret)==2:
                 x=int(ret[0])
                 y=int(ret[1])
-                if x>=0 and x<9 and y>=0 and y<9:
-                    if self.board.status[x*9+y]=='-':
+                if x>=0 and x<self.board.width and y>=0 and y<self.board.width:
+                    if self.board.status[x*self.board.width+y]==0:
                         break
             print("invalid input")
-        action =x*9+y
+        action =x*self.board.width+y
         return action
 
 
@@ -39,8 +42,6 @@ class MCTSPlayer(Player):
 
     def reset_player(self):
         self.mcts.update_with_move(-1)
-
-
     
     def get_action(self):
         sensible_moves = self.board.available
@@ -51,7 +52,7 @@ class MCTSPlayer(Player):
 
         else:
             print("WARNING: the board is full")
-
+    
     def __str__(self):
         return "MCTS "
 
@@ -61,8 +62,6 @@ class RandomPlayer(Player):
 
     def get_action(self):
             return random.choice(self.board.available)
-
-
 
 
 class ExpertPlayer(Player):
