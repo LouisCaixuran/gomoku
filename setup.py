@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(name='gomoku',
-      version='0.2',
+      version='0.3',
       url='https://github.com/LouisCaixuran/gomoku',
       license='Apache',
       author='Louis Caixuran',
@@ -10,7 +10,8 @@ setup(name='gomoku',
       packages=find_packages(exclude=['tests']),
       long_description=open('README.md').read(),
       zip_safe=False,
-      
+      include_package_data = True,      
+
       entry_points={
           'console_scripts':[
   	      'play-go = gomoku.run:run',

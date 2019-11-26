@@ -24,7 +24,7 @@ SECRET_KEY = '^r8ws7in1ha_rebsvil7o4er@#$3)&(+3v60dae2%k!gv&-(4a'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['10.43.177.163']
 
 
 # Application definition
@@ -52,10 +52,12 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'gomoku_ui.gomoku_ui.urls'
 
+A_DIR=os.path.join(BASE_DIR,'../')
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join('/Users/caihui/gomoku_ui/templates')],
+        'DIRS': [os.path.join(A_DIR,'gomoku_ui/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -125,8 +127,9 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    os.path.join(HERE, 'static/'),
+    os.path.join(A_DIR, 'gomoku_ui/static'),
 )
+
 
 # Channels
 ASGI_APPLICATION = 'gomoku_ui.gomoku_ui.routing.application'

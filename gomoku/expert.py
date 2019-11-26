@@ -1,4 +1,5 @@
 # encoding: utf-8
+
 from collections import defaultdict
 import logging
 
@@ -134,11 +135,11 @@ class Expert(object):
 
         if loc_player == player:
             value += grade
-        elif loc_player == '-':
+        elif loc_player == 0:
             value += 1     
             grade = grade/10       #碰到空棋，就降低后续的黑棋权值
         else:                      #对手的棋子 
-            value -= 2    
+            value -= 5    
             return 0, value, grade   # 遇到对手棋,结束后续移动    
         return 1, value, grade   
 
@@ -157,14 +158,16 @@ class Expert(object):
             
             #表示一个方向已经可以是冲5了: 最差分数模式：XOO-OOX :396
             # XOOOO-X :396 ;         
-            if (self.move_value[move][0] >= 396 or self.move_value[move][1] >= 396 or
-                self.move_value[move][2] >= 396 or self.move_value[move][3] >= 396 ):
-                return  move, self.max_value
+#            if (self.move_value[move][0] >= 390 or self.move_value[move][1] >= 390 or
+#                self.move_value[move][2] >= 390 or self.move_value[move][3] >= 390 ):
+#                return  move, self.max_value
 
             #表示一个方向已经可以是冲4了
             for k in range(4):
-               if self.move_value[move][k] >= 302 : 
-                   self.move_value[move][k] = 10000
+               if self.move_value[move][k] >= 390 :
+                   self.move_value[move][k] = 2000
+               elif self.move_value[move][k] >= 302 :
+                   self.move_value[move][k] = 1000
 
                 
             #综合各个方向得分
@@ -191,15 +194,16 @@ class Expert(object):
         m_move,m_value = self.evaluate_all_value(m_player_id)
         
         logging.info("loaction:{loc},value:{value}".format(
-                     loc = self.move_to_location(m_move),value=m_value))
+        	         loc = self.move_to_location(m_move),value=m_value))
         
         s_move,s_value = self.evaluate_all_value(s_player_id)
         
         logging.info("O_loaction:{loc},value:{value}".format(
-                      loc = self.move_to_location(s_move),value = s_value))
+        	          loc = self.move_to_location(s_move),value = s_value))
 
         if m_value >= s_value :
             return m_move
         else:
             return s_move
+
 
