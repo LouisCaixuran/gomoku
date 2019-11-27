@@ -6,6 +6,8 @@ class Gomoku(object):
         self.height=self.size
         self.status=[0 for i in range(self.height*self.width)]
         self.available=[i for i in range(self.height*self.width)]
+        self.player1_last_action=-1
+        self.player2_last_action=-1
         self.last_action=-1
         self.players=[1,2]
         self.end=False
@@ -18,12 +20,13 @@ class Gomoku(object):
         if isShow:
             self.showboard()
         while True:
-            self.last_action=self.get_current_player(player1,player2).get_action()
-
-            self.set_action(self.last_action)
+            if not self.end:
+                self.last_action=self.get_current_player(player1,player2).get_action()
+                self.set_action(self.last_action)
             if isShow :
                 self.showboard()
             self.end,self.winner=self.game_end()
+           
             if not self.end:
                 self.get_current_player(player1,player2).reply(self.last_action//self.size,
                                     self.last_action%self.size)
@@ -47,10 +50,10 @@ class Gomoku(object):
 
     def game_end(self):
         if self.is_won()==True :
-            if self.current_player==self.player1:
-                return True,2
-            else:
+            if self.moved_player==self.player1:
                 return True,1
+            else:
+                return True,2
         elif len(self.available)==0:
             return True,-1
         else:
@@ -76,65 +79,60 @@ class Gomoku(object):
                     p = '-'
                 print("{pi: ^4}".format(pi=p),end=""),
             print("")
+
+        print("The Current player:",self.current_player)
         if self.last_action != -1 :
-            print("last action is",self.last_action//self.height,self.last_action%self.width)
+            print("player1: O, last action:" ,self.player1_last_action//self.height,self.player1_last_action%self.width)
+            print("player2: X, last action:" ,self.player2_last_action//self.height,self.player2_last_action%self.width)
 
     def set_action(self,action):
-        player=self.current_player
+        self.moved_player=self.current_player
         self.last_action=action
 
-        if player==self.player1:
+        if self.moved_player==self.player1:
             self.status[action]=1
+            self.player1_last_action=action
         else:
             self.status[action]=2
+            self.player2_last_action=action
         self.available.remove(action)
 
-        if player==self.player1:
+        if self.moved_player==self.player1:                #next player become current player
             self.current_player=self.player2
         else:
             self.current_player=self.player1
 
     def is_won(self):
+        n = 5
+        player_moved=[] 
+
         if self.last_action==-1:
             return False
-        player=self.status[self.last_action]
-        pos=self.last_action
-        c=0
-        for i in range(pos-pos%self.size,pos-pos%self.size+self.size):
-            if self.status[i]==player:
-                c+=1
-            else:
-                c=0
-            if c>=5:
-                return True
-        c=0
-        for i in range(pos%self.size,pos%self.size+self.size*(self.size-1),self.size):
-            if self.status[i]==player:
-                c+=1
-            else:
-                c=0
-            if c>=5:
-                return True
-        c=0
-        for i in range(pos%(self.size+1),self.size**2-1,self.size+1):
-            if self.status[i]==player:
-                c+=1
-            else:
-                c=0
-            if c>=5:
-                return True
-            if i%self.size==self.size-1:
-                c=0
 
-        c=0
-        for i in range(pos%(self.size-1),self.size**2-1,self.size-1):
-            if self.status[i]==player:
-                c+=1
-            else:
-                c=0
-            if c>=5:
+        for m in range(self.width*self.height):
+            if self.status[m] == self.moved_player:
+                player_moved.append(m)
+
+        if len(player_moved) < n: # player move less 5
+            return False
+        
+        for m in player_moved:
+            h = m // self.width
+            w = m % self.width
+    
+            if (w in range(self.width - n + 1) and
+                len(set(self.status[i] for i in range(m, m + n))) == 1):
                 return True
-            if i%self.size==0:
-                c=0
-        return False
+
+            if (h in range(self.height - n + 1) and
+                len(set(self.status[i] for i in range(m, m + n * self.width, self.width))) == 1):
+                return True
+
+            if (w in range(self.width - n + 1) and h in range(self.height - n + 1) and
+                len(set(self.status[i] for i in range(m, m + n * (self.width + 1), self.width + 1))) == 1):
+                return True
+
+            if (w in range(n - 1, self.width) and h in range(self.height - n + 1) and
+                len(set(self.status[i] for i in range(m, m + n * (self.width - 1), self.width - 1))) == 1):
+                return True
 

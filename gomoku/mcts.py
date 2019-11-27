@@ -73,7 +73,7 @@ class TreeNode(object):
             value Q, and prior probability P, on this node's score.
         """
         self._u = (c_puct * self._P *
-                   np.sqrt(self._parent._n_visits) / (1 + self._n_visits))
+                   np.sqrt(np.log(self._parent._n_visits)/(1+self._n_visits)))
         return self._Q + self._u
 
     def is_leaf(self):
