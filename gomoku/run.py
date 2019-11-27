@@ -19,8 +19,11 @@ def run():
     parse.add_argument("player2", type=int, choices=[1,2,3,4],
                     help="1.Human; 2.MCTS; 3.Random; 4.Expert")
 
+    parse.add_argument("--size", type=int, default=8,
+                    help="The Board size,default is 8*8 ")
+    
     args = parse.parse_args()
-    chess=Gomoku()
+    chess=Gomoku(board_size=args.size)
     p1={
         1 : HumanPlayer(chess),
         2 : MCTSPlayer(chess),

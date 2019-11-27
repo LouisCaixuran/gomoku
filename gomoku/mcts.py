@@ -116,7 +116,7 @@ class MCTS(object):
                 break
             # Greedily select next move.
             action, node = node.select(self._c_puct)
-            board.set_chessman(action)
+            board.set_action(action)
 
         action_probs, _ = self._policy(board)
         # Check for end of game
@@ -134,13 +134,14 @@ class MCTS(object):
         and 0 if it is a tie.
         """
         player = board.current_player
+        winner = -1
         while len(board.available)>0:
             end, winner = board.game_end()
             if end:
                 break
             action_probs = rollout_policy_fn(board)
             max_action = max(action_probs, key=itemgetter(1))[0]
-            board.set_chessman(max_action)
+            board.set_action(max_action)
         if winner == -1:  # tie
             return 0
         else:

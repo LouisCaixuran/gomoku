@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(name='gomoku',
-      version='0.3',
+      version='0.4',
       url='https://github.com/LouisCaixuran/gomoku',
       license='Apache',
       author='Louis Caixuran',

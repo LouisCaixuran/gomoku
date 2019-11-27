@@ -1,9 +1,9 @@
 # encoding: utf-8
 class Gomoku(object):
-    def __init__(self):
-        self.ar=15
-        self.width=self.ar
-        self.height=self.ar
+    def __init__(self,board_size=15):
+        self.size=board_size
+        self.width=self.size
+        self.height=self.size
         self.status=[0 for i in range(self.height*self.width)]
         self.available=[i for i in range(self.height*self.width)]
         self.last_action=-1
@@ -20,18 +20,18 @@ class Gomoku(object):
         while True:
             self.last_action=self.get_current_player(player1,player2).get_action()
 
-            self.set_chessman(self.last_action)
+            self.set_action(self.last_action)
             if isShow :
                 self.showboard()
             self.end,self.winner=self.game_end()
             if not self.end:
-                self.get_current_player(player1,player2).reply(self.last_action//self.ar,
-                                    self.last_action%self.ar)
+                self.get_current_player(player1,player2).reply(self.last_action//self.size,
+                                    self.last_action%self.size)
             else:
-                player1.reply(self.last_action//self.ar,
-                                    self.last_action%self.ar)
-                player2.reply(self.last_action//self.ar,
-                                    self.last_action%self.ar)
+                player1.reply(self.last_action//self.size,
+                                    self.last_action%self.size)
+                player2.reply(self.last_action//self.size,
+                                    self.last_action%self.size)
                 break
         if self.winner!=-1:
             print(self.status[self.last_action]," wins")
@@ -79,7 +79,7 @@ class Gomoku(object):
         if self.last_action != -1 :
             print("last action is",self.last_action//self.height,self.last_action%self.width)
 
-    def set_chessman(self,action):
+    def set_action(self,action):
         player=self.current_player
         self.last_action=action
 
@@ -100,7 +100,7 @@ class Gomoku(object):
         player=self.status[self.last_action]
         pos=self.last_action
         c=0
-        for i in range(pos-pos%self.ar,pos-pos%self.ar+self.ar):
+        for i in range(pos-pos%self.size,pos-pos%self.size+self.size):
             if self.status[i]==player:
                 c+=1
             else:
@@ -108,7 +108,7 @@ class Gomoku(object):
             if c>=5:
                 return True
         c=0
-        for i in range(pos%self.ar,pos%self.ar+self.ar*(self.ar-1),self.ar):
+        for i in range(pos%self.size,pos%self.size+self.size*(self.size-1),self.size):
             if self.status[i]==player:
                 c+=1
             else:
@@ -116,25 +116,25 @@ class Gomoku(object):
             if c>=5:
                 return True
         c=0
-        for i in range(pos%(self.ar+1),self.ar**2-1,self.ar+1):
+        for i in range(pos%(self.size+1),self.size**2-1,self.size+1):
             if self.status[i]==player:
                 c+=1
             else:
                 c=0
             if c>=5:
                 return True
-            if i%self.ar==self.ar-1:
+            if i%self.size==self.size-1:
                 c=0
 
         c=0
-        for i in range(pos%(self.ar-1),self.ar**2-1,self.ar-1):
+        for i in range(pos%(self.size-1),self.size**2-1,self.size-1):
             if self.status[i]==player:
                 c+=1
             else:
                 c=0
             if c>=5:
                 return True
-            if i%self.ar==0:
+            if i%self.size==0:
                 c=0
         return False
 
