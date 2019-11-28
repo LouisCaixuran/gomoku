@@ -1,5 +1,5 @@
-from .board import Gomoku
-from .player import *
+from gomoku.board import Gomoku
+from gomoku.player import *
 import logging
 import argparse
 
@@ -22,17 +22,20 @@ def run():
     parse.add_argument("--size", type=int, default=8,
                     help="The Board size,default is 8*8 ")
     
+    parse.add_argument("--simulate_time", type=int, default=2,
+                    help="The MCTS playout simulation time,default is 2s ")
+
     args = parse.parse_args()
     chess=Gomoku(board_size=args.size)
     p1={
         1 : HumanPlayer(chess),
-        2 : MCTSPlayer(chess),
+        2 : MCTSPlayer(chess,simulate_time=args.simulate_time),
         3 : RandomPlayer(chess),
         4 : ExpertPlayer(chess)}
 
     p2={
         1 : HumanPlayer(chess),
-        2 : MCTSPlayer(chess),
+        2 : MCTSPlayer(chess,simulate_time=args.simulate_time),
         3 : RandomPlayer(chess),
         4 : ExpertPlayer(chess)}
 

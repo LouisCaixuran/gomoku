@@ -1,7 +1,7 @@
 import datetime
-from .mcts import *
+from gomoku.mcts import MCTS,policy_value_fn
 import random
-from .expert import Expert
+from gomoku.expert import Expert
 
 
 class Player(object):

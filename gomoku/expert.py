@@ -185,11 +185,11 @@ class Expert(object):
         self.board = board        
 
         if self.board.current_player == self.board.player1:
-           m_player_id = self.board.players[0]
-           s_player_id = self.board.players[1]
+           m_player_id = self.board.player1
+           s_player_id = self.board.player2
         else:
-           m_player_id = self.board.players[1]
-           s_player_id = self.board.players[0]
+           m_player_id = self.board.player2
+           s_player_id = self.board.player1
 
         m_move,m_value = self.evaluate_all_value(m_player_id)
         

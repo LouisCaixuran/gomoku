@@ -1,4 +1,6 @@
 # encoding: utf-8
+
+
 class Gomoku(object):
     def __init__(self,board_size=15):
         self.size=board_size
@@ -6,36 +8,34 @@ class Gomoku(object):
         self.height=self.size
         self.status=[0 for i in range(self.height*self.width)]
         self.available=[i for i in range(self.height*self.width)]
+        self.player1=1
+        self.player2=2
         self.player1_last_action=-1
         self.player2_last_action=-1
+        
         self.last_action=-1
-        self.players=[1,2]
         self.end=False
         self.winner=-1
         self.current_player=1
+        self.moved_player=0 
 
     def play(self,player1,player2,isShow=False):
-        self.player1=1
-        self.player2=2
         if isShow:
             self.showboard()
         while True:
-            if not self.end:
-                self.last_action=self.get_current_player(player1,player2).get_action()
-                self.set_action(self.last_action)
+            if self.end:
+                break
+            
+            self.last_action=self.get_current_player(player1,player2).get_action()
+            self.set_action(self.last_action)
             if isShow :
                 self.showboard()
+                
             self.end,self.winner=self.game_end()
-           
-            if not self.end:
-                self.get_current_player(player1,player2).reply(self.last_action//self.size,
+            self.get_current_player(player1,player2).reply(self.last_action//self.size,
                                     self.last_action%self.size)
-            else:
-                player1.reply(self.last_action//self.size,
-                                    self.last_action%self.size)
-                player2.reply(self.last_action//self.size,
-                                    self.last_action%self.size)
-                break
+            self.next_states()
+
         if self.winner!=-1:
             print(self.status[self.last_action]," wins")
         else:
@@ -96,7 +96,8 @@ class Gomoku(object):
             self.status[action]=2
             self.player2_last_action=action
         self.available.remove(action)
-
+   
+    def next_states(self):
         if self.moved_player==self.player1:                #next player become current player
             self.current_player=self.player2
         else:
@@ -135,4 +136,4 @@ class Gomoku(object):
             if (w in range(n - 1, self.width) and h in range(self.height - n + 1) and
                 len(set(self.status[i] for i in range(m, m + n * (self.width - 1), self.width - 1))) == 1):
                 return True
-
+        return False
