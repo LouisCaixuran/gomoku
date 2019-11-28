@@ -41,7 +41,7 @@ $ play-go -h
                          The MCTS playout simulation time,default is 2s
 ```
 
-* Choose a player to play
+### Choose a player to play
 
 If you want to play with Expert, you can run:
 
@@ -70,7 +70,7 @@ If you want to play with Expert, you can run:
 
 ```
 
-*  Auto test diffent players ability
+### Auto test diffent players ability
 
 If you want to test MCTS vs Expert , you can run:
 
@@ -101,9 +101,9 @@ $ play-go  2 4
 
 ```
 
-*  Change the chess board size 
+### Change the chess board size 
 
-If you want to change the chess board size from 8*8  to 15*15 ,
+If you want to change the chess board size from '8*8'  to '15*15',
 you can run :
 
 ```
@@ -146,14 +146,14 @@ please enter action:
 
 ```
 
-* Change MCTS playout simuelation time
+### Change MCTS playout simuelation time
   
 The ability of MCTS player can improve when the simulation time is increased.
 
 If you want to change simuelation time to 10s(default 2s), you can run:
 
 ```
-$ play-go 2 4 -- simulate-time 10
+$ play-go 2 4 -- simulate_time 10
 
     0   1   2   3   4   5   6   7
 
@@ -186,7 +186,7 @@ player2: X, last action: 3 4
  $ play-go-web  runserver 
 
 ```
-Open http://127.0.0.1:8000/main/ in browser
+Open http://127.0.0.1/main/ in browser
 
 
 ### Play in '192.168.1.10:8000' server
@@ -213,7 +213,7 @@ Any new code to committed should pass the unit tests.
  $ sudo pyhthon3 run.py -h 
 ```
 
-## Run the unit tests:
+## Run the unit test:
 
 ```
  $ sudo pytest 

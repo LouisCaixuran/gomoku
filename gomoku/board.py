@@ -32,10 +32,18 @@ class Gomoku(object):
                 self.showboard()
                 
             self.end,self.winner=self.game_end()
+
+
+            self.next_states() # change current player
+            #update web ui
             self.get_current_player(player1,player2).reply(self.last_action//self.size,
                                     self.last_action%self.size)
-            self.next_states()
 
+        if self.end:#update web ui
+            player1.reply(self.last_action//self.size,
+                                    self.last_action%self.size)
+            player2.reply(self.last_action//self.size,
+                                    self.last_action%self.size)
         if self.winner!=-1:
             print(self.status[self.last_action]," wins")
         else:
