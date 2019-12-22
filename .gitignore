@@ -4,4 +4,4 @@
 dist/
 gomoku.egg-info/
 build/
-
+.cache/
