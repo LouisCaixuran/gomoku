@@ -1,2 +1,0 @@
-recursive-include gomoku_ui/static  *.png *.jpg *.html
-recursive-include gomoku_ui/templates *.html 
