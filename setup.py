@@ -15,7 +15,6 @@ setup(name='gomoku',
       entry_points={
           'console_scripts':[
   	      'play-go = gomoku.run:run',
-              'play-go-web = gomoku_ui.manage:main',
 	    ]
       }
 )

@@ -13,13 +13,6 @@ $ sudo pip3 install -r requirements.txt
 $ sudo python3 setup.py install
 ```
 
-### If use CLI and web:
-
-```
-$ sudo pip3 install -r web-requirements.txt
-$ sudo python3 setup.py install
-```
-
 ## Use CLI:
 
 ```	
@@ -178,26 +171,6 @@ player2: X, last action: 3 4
 
 ```
 
-## Use Web UI:
-
-### Play in local server
-
-```
- $ play-go-web  runserver 
-
-```
-Open http://127.0.0.1/main/ in browser
-
-
-### Play in '192.168.1.10:8000' server
-
-Update the setting.py file : ALLOWED_HOSTS=['192.168.1.10'];
-
-```
- $ play-go-web  runserver 192.168.1.10:8000
-```
-
-Open http://192.168.1.10:8000/main/ in browser
 
 
 # For developers
