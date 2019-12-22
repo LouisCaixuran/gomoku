@@ -1,5 +1,0 @@
-{
-  "gomoku/tests/test_board.py": true, 
-  "gomoku/tests/test_mcts.py": true, 
-  "gomoku/tests/test_run.py": true
-}
