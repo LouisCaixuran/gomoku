@@ -1,5 +1,5 @@
-from gomoku.board import Gomoku
-from gomoku.player import *
+from board import Gomoku
+from player import *
 import logging
 import argparse
 
@@ -40,6 +40,7 @@ def run():
         4 : ExpertPlayer(chess)}
 
     chess.play(p1[args.player1],p2[args.player2], isShow=True)
+    print(chess.current_state())
 
     
 

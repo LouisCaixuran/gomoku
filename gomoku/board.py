@@ -1,4 +1,5 @@
 # encoding: utf-8
+import numpy as np
 
 
 class Gomoku(object):
@@ -145,3 +146,16 @@ class Gomoku(object):
                 len(set(self.status[i] for i in range(m, m + n * (self.width - 1), self.width - 1))) == 1):
                 return True
         return False
+
+    def current_state(self):
+        state=np.zeros((4,self.height,self.width))
+        for i in range(self.height*self.width):
+            if self.status[i]==1:
+                state[0,i//self.width,i%self.width]=1
+            if self.status[i]==2:
+                state[1,i//self.width,i%self.width]=1
+            state[3,i//self.width,i%self.width]=self.current_player
+        state[2,self.last_action//self.width,self.last_action%self.width]=1
+        return state
+        
+    
