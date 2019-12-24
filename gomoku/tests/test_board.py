@@ -1,4 +1,5 @@
 import pytest
+import numpy as np
 
 from gomoku import board
 
@@ -84,3 +85,52 @@ def test_is_won_6():
                   0,1,0,0,0,0]
     assert chess.is_won()==True
     
+def test_current_state_1():
+    chess = board.Gomoku(board_size=3)
+
+    chess.last_action = 1
+    chess.moved_player = 2
+    chess.current_player = 1
+    chess.status=[1,2,0,
+                  0,0,0,
+                  0,0,0]
+
+    state = chess.current_state()
+    
+    p = np.zeros((4,3,3))
+    p[0][0,0] = 1
+    p[1][0,1] = 1
+    p[2][0,1] = 1
+    p[3] = 1
+
+    assert (state==p).all() #所有元素相等，返回true
+
+
+def test_current_state_1():
+    chess = board.Gomoku(board_size=3)
+
+    chess.last_action = 2
+    chess.moved_player = 1
+    chess.current_player = 2
+    chess.status=[1,2,1,
+                  0,0,0,
+                  0,0,0]
+
+    state = chess.current_state()
+    
+    p = np.zeros((4,3,3))
+    p[0][0,0] = 1
+    p[0][0,2] = 1
+
+    p[1][0,1] = 1
+    
+    p[2][0,2] = 1
+    
+    p[3] = 0
+
+    assert (state==p).all() #所有元素相等，返回true
+
+
+
+
+
