@@ -2,10 +2,11 @@
 
 
 class Gomoku(object):
-    def __init__(self,board_size=15):
+    def __init__(self,board_size=15,n_long=5):
         self.size=board_size
         self.width=self.size
         self.height=self.size
+        self.n_long=n_long
         self.status=[0 for i in range(self.height*self.width)]
         self.available=[i for i in range(self.height*self.width)]
         self.player1=1
@@ -112,7 +113,7 @@ class Gomoku(object):
             self.current_player=self.player1
 
     def is_won(self):
-        n = 5
+        n = self.n_long
         player_moved=[] 
 
         if self.last_action==-1:
