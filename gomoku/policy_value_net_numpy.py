@@ -430,7 +430,7 @@ class PolicyValueNet():
             self.load_model(model_file)
 
     def policy_value_fn(self, board):
-        legal_positions = board.availables
+        legal_positions = board.available
         current_state = board.current_state()
         x = current_state.reshape(-1, 4, self.board_width, self.board_height)
         
