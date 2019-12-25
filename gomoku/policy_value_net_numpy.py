@@ -446,7 +446,7 @@ class PolicyValueNet():
         x = np.reshape(x,(-1,4,self.board_width, self.board_height))
         probs = self.network_probs.predict(x)
         value = self.network_value.predict(x)
-        return sotfmax(probs), tanh(value)
+        return softmax(probs), tanh(value)
 
     def train_step(self, state_batch, probs_batch, winner_batch, lr):
         state_batch = np.reshape(state_batch,(-1,4,self.board_width, self.board_height))
