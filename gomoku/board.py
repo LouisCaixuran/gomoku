@@ -150,6 +150,7 @@ class Gomoku(object):
 
     def current_state(self):
         state=np.zeros((4,self.height,self.width))
+
         for i in range(self.height*self.width):
             if self.status[i]==1:
                 state[0,i//self.width,i%self.width]=1
@@ -161,7 +162,8 @@ class Gomoku(object):
             state[3]=0
         else:
             state[3]=1
-        state[2,self.last_action//self.width,self.last_action%self.width]=1
+        if self.last_action!=-1:
+            state[2,self.last_action//self.width,self.last_action%self.width]=1
         return state
         
     
