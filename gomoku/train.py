@@ -59,7 +59,7 @@ class Train():
         old_probs, old_v = self.policy_value_net.policy_value(state_batch)
         
         for i in range(self.epochs):
-            loss, entropy = self.policy_value_net.train_step(
+            loss_p, loss_v = self.policy_value_net.train_step(
                     state_batch,
                     mcts_probs_batch,
                     winner_batch,
@@ -77,9 +77,9 @@ class Train():
         elif kl < self.kl_targ / 2 and self.lr_multiplier < 10:
             self.lr_multiplier *= 1.5
 
-        print(("kl:{:.5f},lr_multiplier:{:.3f},loss:{},entropy:{}"
-               ).format(kl,self.lr_multiplier,loss,entropy))
-        return loss, entropy
+        print(("kl:{:.5f},lr_multiplier:{:.3f},loss_p:{},loss_v:{}"
+               ).format(kl,self.lr_multiplier,loss_p,loss_v))
+        return loss_p, loss_v
   
     #进行评估
     def policy_evaluate(self, n_games=10):

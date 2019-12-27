@@ -5,3 +5,8 @@ dist/
 gomoku.egg-info/
 build/
 .cache/
+1
+best_policy.model
+current_policy.model
+nohup.out
+

@@ -31,7 +31,7 @@ def softmax(x):
     return np.exp(x) / np.sum(np.exp(x))
 
 def mean_squared_error(y, t):
-    return 0.5 * np.sum((y-t)**2)
+    return 0.5 * np.mean((y-t)**2)
 
 def cross_entropy_error(y, t):
     if y.ndim == 1:
@@ -126,6 +126,22 @@ class Tanh:
         dx = dout * (1.0 - self.out * self.out)
 
         return dx
+
+class Dropout:
+    def __init__(self, dropout_ratio=0.5):
+        self.dropout_ratio = dropout_ratio
+        self.mask = None
+
+    def forward(self, x, train_flg=True):
+        if train_flg:
+            self.mask = np.random.rand(*x.shape)>self.dropout_ratio
+            return x * self.mask
+        else:
+            return x*(1.0-self.dropout_ratio)
+    
+    def backward(self, dout):
+        return dout*self.mask
+    
 
 class Affine:
     def __init__(self, W, b):
@@ -317,8 +333,8 @@ class Pooling:
 
 
 """
-   conv - relu - conv - relu - affine - relu - affine - softmax
-   conv - relu - conv - relu - affine - relu - affine - tanh
+   conv - relu - conv - relu - affine  - affine - dropout - softmax
+   conv - relu - conv - relu - affine  - affine - dropout - tanh
  
 """
 class DeepConvNet():
@@ -353,8 +369,7 @@ class DeepConvNet():
                            conv_param_3['stride'], conv_param_3['pad']))
         self.layers.append(Relu())
         self.layers.append(Affine(self.params['W4'], self.params['b4']))
-        self.layers.append(Relu())
-        #self.layers.append(Dropout(0.5))
+        self.layers.append(Dropout(0.2))
         self.layers.append(Affine(self.params['W5'], self.params['b5']))
         #self.layers.append(Dropout(0.5))
         
@@ -423,8 +438,9 @@ class PolicyValueNet():
             conv_param_1 = {'filter_num':32, 'filter_size':3, 'pad':1, 'stride':1},
             conv_param_2 = {'filter_num':64, 'filter_size':3, 'pad':1, 'stride':1},
             conv_param_3 = {'filter_num':128, 'filter_size':3, 'pad':1, 'stride':1},
-            hidden_size = 256, output_size = 1,
+            hidden_size = 128, output_size = 1,
             last_layer= TanhMeanSquaredWithLoss())
+            #last_layer = SoftmaxWithLoss() )
 
         if model_file is not None:
             self.load_model(model_file)
@@ -437,7 +453,7 @@ class PolicyValueNet():
         probs = softmax(self.network_probs.predict(x))
         
         act_probs = zip(legal_positions, probs.flatten()[legal_positions])
-
+        
         act_value = tanh(self.network_value.predict(x))
         
         return act_probs,act_value
@@ -453,11 +469,15 @@ class PolicyValueNet():
         probs_batch = np.reshape(probs_batch, (-1, self.board_width*self.board_height))
         winner_batch = np.reshape(winner_batch, (-1,1))
 
+        
+        #print("state_batch:{},probs_batch:{}".format(state_batch.shape,probs_batch.shape))
         grads_p = self.network_probs.gradient(state_batch,probs_batch)
+        
         loss_p  = self.network_probs.loss(state_batch,probs_batch)
         for key in self.network_probs.params.keys():
             self.network_probs.params[key] -= lr*grads_p[key] 
 
+        print("state_batch:{},winner_batch:{}".format(state_batch,winner_batch))
         grads_v = self.network_value.gradient(state_batch,winner_batch)
         loss_v  = self.network_value.loss(state_batch,winner_batch)
         for key in self.network_value.params.keys():
