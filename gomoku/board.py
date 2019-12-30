@@ -50,6 +50,8 @@ class Gomoku(object):
             print(self.status[self.last_action]," wins")
         else:
             print("it is tied")
+        return self.winner
+
 
     def get_current_player(self,player1,player2):
         if self.current_player==1:
