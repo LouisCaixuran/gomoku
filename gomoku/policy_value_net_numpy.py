@@ -451,7 +451,7 @@ class PolicyValueNet():
     def train_step(self, state_batch, probs_batch, winner_batch, lr):
         state_batch = np.reshape(state_batch,(-1,4,self.board_width, self.board_height))
         probs_batch = np.reshape(probs_batch, (-1, self.board_width*self.board_height))
-        winner_batch = np.reshape(winner_batch, (-1))
+        winner_batch = np.reshape(winner_batch, (-1,1))
 
         grads_p = self.network_probs.gradient(state_batch,probs_batch)
         loss_p  = self.network_probs.loss(state_batch,probs_batch)
