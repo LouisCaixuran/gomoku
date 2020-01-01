@@ -46,7 +46,8 @@ class PolicyValueNet():
         self.v_loss = nn.MSELoss()
         #self.p_loss=nn.CrossEntropyLoss()
         self.optimizer = optim.Adam(self.model.parameters(), lr=0.01)
-
+        if model_file:
+            self.model.load_state_dict(torch.load(model_file))
 
     def policy_value_fn(self, board):
         legal_positions = board.available
@@ -83,3 +84,12 @@ class PolicyValueNet():
         self.optimizer.step()
 
         return p_loss.item(),v_loss.item()
+
+    def save_model(self,dir):
+        torch.save(self.modplel.state_dict(),dir)
+
+
+if __name__ == '__main__':
+    net=PolicyValueNet()
+    net.save_model("./testmodel")
+
