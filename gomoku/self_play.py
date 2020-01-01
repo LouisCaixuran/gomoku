@@ -45,11 +45,11 @@ def rotate(gomoku,one_game_data):
     return ext_data
 
 
-def collect_selfplay_data(gomoku,player,game_num=1):
+def collect_selfplay_data(gomoku,player,game_num=10):
     play_data=[]
     for i in range(game_num):
         play_data.extend(rotate(gomoku,start_self_play(gomoku,player)))
-    print(len(play_data))
+
     return play_data,len(play_data)
 
 

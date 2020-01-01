@@ -8,8 +8,8 @@ from board import Gomoku
 from self_play import collect_selfplay_data
 from player import MCTSPlayer as MCTS_Pure
 from alphazero import AlphaZeroPlayer
-from policy_value_net_numpy import PolicyValueNet 
-#from policy_value_net_pytorch import PolicyValueNet 
+#from policy_value_net_numpy import PolicyValueNet 
+from policy_value_net_pytorch import PolicyValueNet 
 
 class Train():
     def __init__(self, init_model=None):
