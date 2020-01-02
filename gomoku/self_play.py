@@ -32,17 +32,37 @@ def start_self_play(gomoku,player):
             return zip(s,p,v)
     
 
-def rotate(gomoku,one_game_data):
+def rotate1(gomoku,one_game_data):
     ext_data=[]
-    s1=np.zeros((4,gomoku.width,gomoku.height))
-    p1=np.zeros((gomoku.height*gomoku.width))
+    s1=[]
+    p1=[]
+    count=1
     for s,p,v in one_game_data:
+        s1.append(s)
+        p1.append(p)
         for i in range(4):
+            s1.append(4*np.zeros((4,gomoku.width,gomoku.height)))
+            p1.append(np.zeros((gomoku.height*gomoku.width)))
             for j in range(4):
-                s1[j]=np.rot90(s[j])
-            p1=np.rot90(p.reshape(gomoku.width,gomoku.height)).flatten()
-            ext_data.append((s1,p1,v))
+                s1[count][j]=np.rot90(s1[count-1][j])
+            p1[count]=np.rot90(p1[count-1].reshape(gomoku.width,gomoku.height)).flatten()
+            ext_data.append((s1[count],p1[count],v))
+            count=count+1
+        print(ext_data[2][0][0])
     return ext_data
+
+
+def rotate(gomoku,one_game_data):
+    extend_data = []
+    for state, probs, value in one_game_data:
+        for i in [1, 2, 3, 4]:
+            # rotate counterclockwise
+            equi_state = np.array([np.rot90(s, i) for s in state])
+            equi_prob = np.rot90(probs.reshape(gomoku.height,
+                                gomoku.width), i)
+            extend_data.append((equi_state,equi_prob.flatten(),value))
+    return extend_data
+
 
 
 def collect_selfplay_data(gomoku,player,game_num=10):
