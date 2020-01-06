@@ -88,7 +88,7 @@ class PolicyValueNet():
         return p_loss.item(), v_loss.item()
 
     def save_model(self, dir):
-        torch.save(self.modplel.state_dict(), dir)
+        torch.save(self.model.state_dict(), dir)
 
 
 if __name__ == '__main__':
