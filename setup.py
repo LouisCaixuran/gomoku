@@ -10,11 +10,11 @@ setup(name='gomoku',
       packages=find_packages(exclude=['tests']),
       long_description=open('README.md').read(),
       zip_safe=False,
-      include_package_data = True,      
+      include_package_data=True,
 
       entry_points={
-          'console_scripts':[
-  	      'play-go = gomoku.run:run',
-	    ]
+          'console_scripts': [
+          'play-go = gomoku.run:run',
+        ]
       }
 )

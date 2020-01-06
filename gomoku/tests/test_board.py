@@ -71,7 +71,7 @@ def test_is_won_5():
                     0, 0, 0, 1, 0, 0,
                     0, 0, 2, 0, 0, 0,
                     0, 1, 0, 0, 0, 0]
-    assert chess.is_won()
+    assert not chess.is_won()
 
 
 def test_is_won_6():
