@@ -48,7 +48,6 @@ def rotate1(gomoku,one_game_data):
             p1[count]=np.rot90(p1[count-1].reshape(gomoku.width,gomoku.height)).flatten()
             ext_data.append((s1[count],p1[count],v))
             count=count+1
-        print(ext_data[2][0][0])
     return ext_data
 
 

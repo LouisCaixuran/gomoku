@@ -19,11 +19,11 @@ class Train():
         # training params
         self.n_playout = 400  # num of simulations for each move
         self.c_puct = 5
-        self.buffer_size = 1024
+        self.buffer_size = 10240
         self.batch_size = 512  # mini-batch size for training
         self.data_buffer = deque(maxlen=self.buffer_size)
         self.epochs = 10  # num of train_steps for each update
-        self.check_freq = 10
+        self.check_freq = 50
         self.game_batch_num = 500  
         
         self.best_win_ratio = 0.0

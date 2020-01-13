@@ -68,6 +68,7 @@ class PolicyValueNet():
         probs=probs.data.numpy()
         value=value.data.numpy()
         return probs, value
+    
 
     def train_step(self, state_batch, probs_batch, winner_batch, lr):
     
@@ -81,6 +82,8 @@ class PolicyValueNet():
         v_loss=self.v_loss(v_out,winner_batch)
         loss=p_loss+v_loss
         loss.backward()
+        for param_group in self.optimizer.param_groups:
+            param_group['lr'] = lr
         self.optimizer.step()
 
         return p_loss.item(),v_loss.item()
