@@ -193,4 +193,15 @@ Any new code to committed should pass the unit tests.
  $ sudo pytest 
 ```	
 
+## begin trainning and output the result to file
+```
+ $ python3 train.py >[file name] &
+```
+
+## check the loss 
+```
+ $ cat [file name] |grep loss
+```
+
+
 
