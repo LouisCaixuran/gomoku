@@ -203,5 +203,16 @@ Any new code to committed should pass the unit tests.
  $ cat [file name] |grep loss
 ```
 
+## change the net
+two kinds of net have already been built,by pytorch and numpy
+now the training process uses from the pytorch one.
 
-
+if you want to switch to numpy one
+change line 12
+```
+ from policy_value_net_pytorch import PolicyValueNet
+```
+into 
+```
+ from policy_value_net_numpy import PolicyValueNet
+```
